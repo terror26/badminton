@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 
 @Document("category")
-@Data
 public class MongoCategory {
 
 	@BsonProperty(value= "_id")

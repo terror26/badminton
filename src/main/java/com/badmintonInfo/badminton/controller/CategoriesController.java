@@ -20,9 +20,9 @@ public class CategoriesController {
 		this.categoryService = categoryService;
 	}
 
-	@GetMapping(value = { "/categories", "/categories/{id}" })
-	public CategoryData getCategories(@PathVariable(required = false) String id) {
-		return categoryService.getCategoryData(id);
+	@GetMapping(value = { "/categories", "/categories/{category}" })
+	public CategoryData getCategories(@PathVariable(required = false) String category) {
+		return categoryService.getCategoryData(category);
 	}
 
 }

@@ -19,9 +19,6 @@ public interface PlayerRepository extends MongoRepository<MongoPlayer, String> {
 	@Query("{category:?0}")
 	List<MongoPlayer> findByIconicPlayerIsTrueAndCategory(Pageable pageable, String category);
 
-	@Query
-	Page<MongoPlayer> findByBwfRanking(Pageable pageable);
-
     @Query("{country:?0,category:?1}")
 	List<MongoPlayer> findByCountryAndCategory(Pageable pageable,String country, String category);
 

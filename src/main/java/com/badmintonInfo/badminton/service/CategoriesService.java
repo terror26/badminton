@@ -24,6 +24,7 @@ public class CategoriesService {
 
 	private final CategoryRepository categoryRepository;
 	private final PlayerRepository playerRepository;
+	final Pageable request = PageRequest.of(0, 10, Sort.Direction.ASC, "bwfRanking");
 
 	@Autowired
 	public CategoriesService(CategoryRepository categoryRepository, PlayerRepository playerRepository) {
@@ -32,8 +33,6 @@ public class CategoriesService {
 	}
 
 	public CategoryData getCategoryData(String category) {
-		Pageable request = PageRequest.of(0, 2, Sort.Direction.DESC, "bwfRanking");
-
 		List<MongoCategory> mongoRepo = categoryRepository.findAll();
 		List<MongoPlayer> mongoPlayers = new ArrayList<>();
 		if (StringUtils.isEmpty(category)) {

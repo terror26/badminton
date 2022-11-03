@@ -22,7 +22,6 @@ public class PlayerController {
 	
 	@GetMapping()
 	public PlayerData getPlayers(@RequestParam(required= false) String country, @RequestParam(required= false)  String category) {
-		System.out.println("country and category is " + country + " : " + category );
 		return playerService.getPlayers(country, category);
 	}	
 }

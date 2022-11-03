@@ -24,6 +24,7 @@ public class PlayerService {
 
 	
 	private final PlayerRepository playerRepository;
+	final Pageable request = PageRequest.of(0, 2, Sort.Direction.ASC, "bwfRanking");	
 	
 	@Autowired
 	public PlayerService(PlayerRepository playerRepository) {
@@ -31,40 +32,31 @@ public class PlayerService {
 	}
 	
 	public PlayerData getPlayers(String country, String category) {
-		
-		Pageable request = PageRequest.of(0, 2, Sort.Direction.DESC, "bwfRanking");	
-		
-		List<MongoPlayer> findByCountryAndCategory = getMongoPlayers(country,category, request);
+				
+		List<MongoPlayer> findByCountryAndCategory = getMongoPlayers(country,category);
 		List<Player> players = findByCountryAndCategory.stream().map(r -> new Player(r)).collect(Collectors.toList());
 		
 		return new PlayerData(players);
 	}
 
-	private List<MongoPlayer> getMongoPlayers(String country, String category, Pageable request) {
+	private List<MongoPlayer> getMongoPlayers(String country, String category) {
 		
 		List<MongoPlayer> findByCountryAndCategory = new ArrayList<>();
-		
-		if(!StringUtils.isEmpty(country) && !StringUtils.isEmpty(category)) {
+		if(category == null) {
+			category = "men_singles"; // default category
+		}
+		if(!StringUtils.isEmpty(country)) {
 			
+			country = country.toLowerCase();
+			category = category.toLowerCase();
 			log.info("findByCountryAndCategory");
 			findByCountryAndCategory = playerRepository.findByCountryAndCategory(request,country, category);
 			
-		} else if(!StringUtils.isEmpty(country) ) {
-			
-			log.info("findByCountry");
-			findByCountryAndCategory = playerRepository.findByCountry(request,country);
-			
-		} else if(!StringUtils.isEmpty(category) ) {
-			
+		} else {
 			log.info("findByCategory");
 			findByCountryAndCategory = playerRepository.findByCategory( request,category);
 			
-		} else {
-			
-			log.info("findByBwfRanking");
-			findByCountryAndCategory = playerRepository.findByBwfRanking(request).getContent(); // Top 10 overall
 		}
-		System.out.println("the result is  " + findByCountryAndCategory.size());
 		return findByCountryAndCategory;
 	}
 
